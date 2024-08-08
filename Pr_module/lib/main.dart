@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-
-import 'package:pr/Homescreen.dart';
-import 'package:pr/provider.dart';
+import 'package:pr/Screens/Homeprscreen.dart';
+import 'package:pr/controllar/Taskprovider.dart';
+import 'package:pr/controllar/pollprovider.dart';
+import 'package:pr/controllar/postprovider.dart';
 import 'package:provider/provider.dart';
 
 void main() => runApp( const MyApp());
@@ -11,11 +12,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-        create: (context) =>ProviderService(),
+    return MultiProvider(
+providers: [
+  ChangeNotifierProvider(create: (context)=> TaskProvider()),
+  ChangeNotifierProvider(create: (context)=>Pollprovider()),
+  ChangeNotifierProvider(create: (context)=> Postprovider())
+],
         child: const MaterialApp(
           debugShowCheckedModeBanner: false,
-          home: HomeScreen(),
+          home: HomePrScreen(),
         ));
   }
 }

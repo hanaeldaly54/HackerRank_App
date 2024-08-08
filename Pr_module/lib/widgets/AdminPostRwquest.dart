@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:pr/controllar/postprovider.dart';
+
 import 'package:provider/provider.dart';
-import 'provider.dart'; // Adjust the import according to your file structure
 
 class AdminPostRequestCard extends StatelessWidget {
   final Map<String, dynamic> request;
@@ -43,14 +44,14 @@ class AdminPostRequestCard extends StatelessWidget {
                 IconButton(
                   icon: const Icon(Icons.check,color: Colors.green),
                   onPressed: () {
-                    final pollprovider = Provider.of<ProviderService>(context, listen: false);
+                    final pollprovider = Provider.of<Postprovider>(context, listen: false);
                     pollprovider.approvePostRequest(pendingIndex);
                   },
                 ),
                 IconButton(
                   icon: const Icon(Icons.close,color: Colors.green,),
                   onPressed: () {
-                    final pollprovider = Provider.of<ProviderService>(context, listen: false);
+                    final pollprovider = Provider.of<Postprovider>(context, listen: false);
                     pollprovider.rejectPostRequest(pendingIndex);
                   },
                 ),

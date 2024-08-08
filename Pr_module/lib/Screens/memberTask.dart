@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pr/widgets/Taskwidgets/Assignment_card.dart';
 
-import 'package:pr/Taskwidgets/Assignment_card.dart';
-//; To get the correct file path
 
 class MemberTaskScreen extends StatefulWidget {
   @override

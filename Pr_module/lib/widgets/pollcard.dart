@@ -4,13 +4,14 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_polls/flutter_polls.dart';
-import 'package:pr/Pollbottomsheet.dart';
-import 'package:pr/provider.dart';
+import 'package:pr/controllar/pollprovider.dart';
+import 'package:pr/widgets/Pollbottomsheet.dart';
+
 
 class PollCard extends StatefulWidget {
   final Map<String, dynamic> poll;
   final bool isAdmin;
-  final ProviderService pollProvider;
+  final Pollprovider pollProvider;
  
 
    const PollCard(

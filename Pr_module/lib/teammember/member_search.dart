@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pr/models/teammember/team_member.dart';
 
 
+import 'package:pr/models/team_member.dart';
 
 class TeamMemberSearchDelegate extends SearchDelegate {
   final List<TeamMember> teamMembers;

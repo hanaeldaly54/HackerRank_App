@@ -1,13 +1,14 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:pr/provider.dart';
+import 'package:pr/controllar/postprovider.dart';
+
 
 void showCreatePollBottomSheet(BuildContext context,
     {Map<String, dynamic>? post,
     required bool isAdmin,
     required Function(Map<String, dynamic>) onSavePoll,
-    required ProviderService postProvider}) {
+    required Postprovider postProvider}) {
   showModalBottomSheet(
     context: context,
     isScrollControlled: true, // Make the bottom sheet expandable
@@ -32,7 +33,7 @@ class AddPostBottomSheet extends StatefulWidget {
   final bool isAdmin;
   final Map<String, dynamic>? post;
   final Function(Map<String, dynamic>) onSavePoll;
-  final ProviderService postProvider;
+  final Postprovider postProvider;
   const AddPostBottomSheet(
       {super.key,
       this.post,
@@ -163,7 +164,7 @@ class CustomCard extends StatefulWidget {
   final int index;
   final Map<String, dynamic> post;
   final Function(Map<String, dynamic>) onEdit;
-  final ProviderService postProvider;
+  final Postprovider postProvider;
 
   const CustomCard({
     super.key,

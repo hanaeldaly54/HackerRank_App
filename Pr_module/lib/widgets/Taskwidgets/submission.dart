@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pr/Taskwidgets/Taskprovider.dart';
-import 'package:pr/provider.dart';
-import 'package:pr/taskmodel/taskdata.dart';
+
+import 'package:pr/controllar/Taskprovider.dart';
+import 'package:pr/models/taskmodel/taskdata.dart';
 
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -11,13 +11,14 @@ class SubmissionListItem extends StatefulWidget {
   final int taskIndex;
   final int submissionIndex;
 
-  SubmissionListItem({
+  const SubmissionListItem({super.key, 
     required this.submission,
     required this.taskIndex,
     required this.submissionIndex,
   });
 
   @override
+  // ignore: library_private_types_in_public_api
   _SubmissionListItemState createState() => _SubmissionListItemState();
 }
 
@@ -54,32 +55,32 @@ class _SubmissionListItemState extends State<SubmissionListItem> {
               },
               child: Text(
                 'File Path: ${widget.submission.filePath}',
-                style: TextStyle(color: Colors.blue, decoration: TextDecoration.underline),
+                style: const TextStyle(color: Colors.blue, decoration: TextDecoration.underline),
               ),
             ),
-            SizedBox(height: 8.0),
+            const SizedBox(height: 8.0),
             TextFormField(
               controller: _degreeController,
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(labelText: 'Degree'),
+              decoration: const InputDecoration(labelText: 'Degree'),
             ),
-            SizedBox(height: 8.0),
+            const SizedBox(height: 8.0),
             TextFormField(
               controller: _commentController,
-              decoration: InputDecoration(labelText: 'Comment'),
+              decoration: const InputDecoration(labelText: 'Comment'),
             ),
-            SizedBox(height: 8.0),
+            const SizedBox(height: 8.0),
             ElevatedButton(
               onPressed: () {
                 _submitDetails(context);
               },
-              child: Text('Submit'),
+              child: const Text('Submit'),
             ),
             ElevatedButton(
               onPressed: () {
                 _openFile(widget.submission.filePath);
               },
-              child: Text('Download and Open File'),
+              child: const Text('Download and Open File'),
             ),
           ],
         ),
@@ -92,8 +93,9 @@ class _SubmissionListItemState extends State<SubmissionListItem> {
     if (await canLaunchUrlString(fileUri.toString())) {
       await launchUrlString(fileUri.toString());
     } else {
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Could not open the file.')),
+        const SnackBar(content: Text('Could not open the file.')),
       );
     }
   }
@@ -101,7 +103,7 @@ class _SubmissionListItemState extends State<SubmissionListItem> {
   void _submitDetails(BuildContext context) {
     final degree = int.tryParse(_degreeController.text) ?? 0;
     final comment = _commentController.text;
-    Provider.of<ProviderService>(context, listen: false).updateSubmissionDetails(
+    Provider.of<TaskProvider>(context, listen: false).updateSubmissionDetails(
       widget.taskIndex,
       widget.submissionIndex,
       degree,

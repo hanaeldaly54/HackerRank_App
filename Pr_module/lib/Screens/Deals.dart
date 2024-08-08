@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:pr/AdminPostRwquest.dart';
-import 'package:pr/Pollbottomsheet.dart';
-import 'package:pr/pollcard.dart';
-import 'package:pr/post.dart';
-import 'package:pr/provider.dart';
+import 'package:pr/controllar/pollprovider.dart';
+import 'package:pr/controllar/postprovider.dart';
+
+import 'package:pr/widgets/AdminPostRwquest.dart';
+import 'package:pr/widgets/AdminRequestCard.dart';
+
+import 'package:pr/widgets/Pollbottomsheet.dart';
+import 'package:pr/widgets/pollcard.dart';
+import 'package:pr/widgets/post.dart';
 
 import 'package:provider/provider.dart';
 
-import 'AdminRequestCard.dart';
+
 
 class Deals extends StatefulWidget {
   final bool isAdmin;
@@ -36,7 +40,8 @@ class _DealsState extends State<Deals> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ProviderService>(builder: (context, pollprovider, _) {
+    final pollprovider =Provider.of<Pollprovider>(context);
+    final postprovider=Provider.of<Postprovider>(context);
       return Scaffold(
         body: Column(
           children: [
@@ -62,7 +67,7 @@ class _DealsState extends State<Deals> with SingleTickerProviderStateMixin {
                         // Deals Tab
                         ListView.builder(
                           itemCount: pollprovider.polls.length +
-                              pollprovider.posts.length,
+                              postprovider.posts.length,
                           itemBuilder: (context, index) {
                             if (index < pollprovider.polls.length) {
                               final poll = pollprovider.polls[index];
@@ -73,21 +78,21 @@ class _DealsState extends State<Deals> with SingleTickerProviderStateMixin {
                             } else {
                               final postIndex =
                                   index - pollprovider.polls.length;
-                              final post = pollprovider.posts[postIndex];
+                              final post = postprovider.posts[postIndex];
                               return CustomCard(
                                   index: postIndex,
                                   post: post,
                                   onEdit: (updatedPost) {
-                                    pollprovider.editPost(
+                                    postprovider.editPost(
                                         post['description'], updatedPost);
-                                  },  isAdmin: widget.isAdmin, postProvider: pollprovider,);
+                                  },  isAdmin: widget.isAdmin, postProvider: postprovider,);
                             }
                           },
                         ),
                         // Requests Tab
                         ListView.builder(
                           itemCount: pollprovider.pendingPolls.length +
-                              pollprovider.pendingPosts.length,
+                              postprovider.pendingPosts.length,
                           itemBuilder: (context, index) {
                             if (index < pollprovider.pendingPolls.length) {
                               final pendingIndex = index;
@@ -99,7 +104,7 @@ class _DealsState extends State<Deals> with SingleTickerProviderStateMixin {
                               final pendingPostIndex =
                                   index - pollprovider.pendingPolls.length;
                               final postRequest =
-                                  pollprovider.pendingPosts[pendingPostIndex];
+                                  postprovider.pendingPosts[pendingPostIndex];
                               return AdminPostRequestCard(
                                   request: postRequest,
                                   pendingIndex: pendingPostIndex);
@@ -110,7 +115,7 @@ class _DealsState extends State<Deals> with SingleTickerProviderStateMixin {
                     )
                   : ListView.builder(
                       itemCount:
-                          pollprovider.polls.length + pollprovider.posts.length,
+                          pollprovider.polls.length + postprovider.posts.length,
                       itemBuilder: (context, index) {
                         if (index < pollprovider.polls.length) {
                           final poll = pollprovider.polls[index];
@@ -120,14 +125,14 @@ class _DealsState extends State<Deals> with SingleTickerProviderStateMixin {
                               pollProvider: pollprovider);
                         } else {
                           final postIndex = index - pollprovider.polls.length;
-                          final post = pollprovider.posts[postIndex];
+                          final post = postprovider.posts[postIndex];
                           return CustomCard(
                               index: postIndex,
                               post: post,
                               onEdit: (updatedPost) {
-                                pollprovider.editPost(
+                                postprovider.editPost(
                                     post['description'], updatedPost);
-                              }, isAdmin: widget.isAdmin, postProvider: pollprovider,);
+                              }, isAdmin: widget.isAdmin, postProvider:postprovider,);
                         }
                       },
                     ),
@@ -154,9 +159,9 @@ class _DealsState extends State<Deals> with SingleTickerProviderStateMixin {
                                 builder: (BuildContext context) {
                                   return AddPostBottomSheet(
                                     onSavePoll: (newPost) {
-                                      pollprovider.addPost(newPost);
+                                      postprovider.addPost(newPost);
                                    Navigator.of(context).pop();
-                                    }, isAdmin: widget.isAdmin, postProvider: pollprovider,
+                                    }, isAdmin: widget.isAdmin, postProvider: postprovider,
                                   );
                                 },
                               );
@@ -205,6 +210,6 @@ class _DealsState extends State<Deals> with SingleTickerProviderStateMixin {
           },
         ),
       );
-    });
+    
   }
 }

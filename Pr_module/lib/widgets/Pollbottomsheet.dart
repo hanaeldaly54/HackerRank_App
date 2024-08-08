@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:pr/provider.dart';
+import 'package:pr/controllar/pollprovider.dart';
+
 
 class PollBottomSheet extends StatefulWidget {
   final Map<String, dynamic>? poll;
   final bool isAdmin;
   final Function(Map<String, dynamic>) onSavePoll;
-  final ProviderService pollProvider;
+  final Pollprovider pollProvider;
 
   const PollBottomSheet(
       {super.key, this.poll, required this.isAdmin, required this.onSavePoll, required this.pollProvider});
@@ -182,7 +183,7 @@ void showCreatePollBottomSheet(BuildContext context,
     {Map<String, dynamic>? poll,
     required bool isAdmin,
     required Function(Map<String, dynamic>) onSavePoll,
-    required ProviderService pollProvider}) {
+    required Pollprovider pollProvider}) {
   showModalBottomSheet(
     context: context,
     isScrollControlled: true, // Add this line to make it expandable

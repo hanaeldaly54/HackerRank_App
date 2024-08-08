@@ -7,8 +7,8 @@ import 'package:pr/Screens/memberTask.dart';
 
 
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class HomePrScreen extends StatelessWidget {
+  const HomePrScreen({super.key});
   final bool isAdmin = true;
   @override
   Widget build(BuildContext context) {
@@ -66,7 +66,7 @@ class HomeScreen extends StatelessWidget {
             children: [
               Container(
                 height: double.infinity,
-                child: TeamPage(isAdmin:isAdmin),
+                child: TeamPage(isAdmin: isAdmin,),
               ),
               Container(
                 height: double.infinity,

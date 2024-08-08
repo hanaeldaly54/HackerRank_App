@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pr/Taskwidgets/Taskprovider.dart';
-
-import 'package:pr/Taskwidgets/submission.dart';
-import 'package:pr/provider.dart';
-import 'package:pr/taskmodel/taskdata.dart';
-
-
+import 'package:pr/controllar/Taskprovider.dart';
+import 'package:pr/models/taskmodel/taskdata.dart';
+import 'package:pr/widgets/Taskwidgets/submission.dart';
 import 'package:provider/provider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:intl/intl.dart';
@@ -15,7 +11,7 @@ class TaskScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Consumer<ProviderService>(
+      body: Consumer<TaskProvider>(
         builder: (context, taskProvider, _) {
           return ListView.builder(
             itemCount: taskProvider.tasks.length,
@@ -46,8 +42,8 @@ class TaskScreen extends StatelessWidget {
               expand: false,
               builder: (context, scrollcontrollar) {
                 return SingleChildScrollView(
-                  child: AddTask(),
-                  controller:scrollcontrollar
+                  controller:scrollcontrollar,
+                  child: const AddTask()
                 );
               },
             ));
@@ -55,12 +51,14 @@ class TaskScreen extends StatelessWidget {
 }
 
 class AddTask extends StatefulWidget {
+  const AddTask({super.key});
+
   @override
   AddTaskState createState() => AddTaskState();
 }
 
 class AddTaskState extends State<AddTask> {
-  String TaskName = '';
+  String taskName = '';
   DateTime? dueDate;
   String taskDetails = '';
   int degree = 0;
@@ -107,7 +105,7 @@ class AddTaskState extends State<AddTask> {
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(40))),
             onChanged: (value) {
-              TaskName = value;
+              taskName = value;
             },
           ),
           const SizedBox(
@@ -141,12 +139,12 @@ class AddTaskState extends State<AddTask> {
           _buildFilePickerButton(context),
           const SizedBox(height: 16.0),
           _buildDatePickerButton(context),
-          SizedBox(height: 16.0),
+          const SizedBox(height: 16.0),
           ElevatedButton(
             onPressed: () {
               _addTask(context);
             },
-            child: Text(
+            child: const Text(
               'Add Task',
               style: TextStyle(color: Color.fromARGB(255, 85, 116, 86)),
             ),
@@ -157,9 +155,9 @@ class AddTaskState extends State<AddTask> {
   }
 
   void _addTask(BuildContext context) {
-    final provider = Provider.of<ProviderService>(context, listen: false);
+    final provider = Provider.of<TaskProvider>(context, listen: false);
     final newTask = Task(
-      name: TaskName,
+      name: taskName,
       dueDate: dueDate ?? DateTime.now(),
       details: taskDetails,
       Degree: degree,
@@ -184,7 +182,7 @@ class AddTaskState extends State<AddTask> {
           onPressed: () {
             selectDate(context);
           },
-          icon: Icon(
+          icon: const Icon(
             Icons.calendar_today,
             color: Colors.green,
           ),
@@ -192,7 +190,7 @@ class AddTaskState extends State<AddTask> {
             dueDate == null
                 ? 'Select Deadline'
                 : 'Deadline: ${DateFormat.yMd().format(dueDate!)}',
-            style: TextStyle(color: Colors.black),
+            style: const TextStyle(color: Colors.black),
           ),
         ),
       ],
@@ -204,7 +202,7 @@ class AddTaskState extends State<AddTask> {
       children: [
         ElevatedButton.icon(
           style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Colors.white)),
+              backgroundColor: WidgetStateProperty.all(Colors.white)),
           onPressed: () {
             openfile(context);
           },
@@ -214,7 +212,7 @@ class AddTaskState extends State<AddTask> {
           ),
           label: Text(
             filePath == null ? 'Attach File' : 'File Attached',
-            style: TextStyle(color: Colors.black),
+            style: const TextStyle(color: Colors.black),
           ),
         ),
         if (filePath != null)
@@ -267,7 +265,7 @@ class TaskBottomSheet extends StatefulWidget {
   final Task task;
   final int index;
 
-  TaskBottomSheet({required this.task, required this.index});
+  const TaskBottomSheet({super.key, required this.task, required this.index});
 
   @override
   _TaskBottomSheetState createState() => _TaskBottomSheetState();
@@ -276,7 +274,7 @@ class TaskBottomSheet extends StatefulWidget {
 class _TaskBottomSheetState extends State<TaskBottomSheet> {
   late TextEditingController _nameController;
   late TextEditingController _detailsController;
-  late int Degree;
+  late int degree;
   late DateTime _dueDate;
 
   @override
@@ -284,7 +282,7 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
     super.initState();
     _nameController = TextEditingController(text: widget.task.name);
     _detailsController = TextEditingController(text: widget.task.details);
-    Degree = widget.task.Degree;
+    degree = widget.task.Degree;
     _dueDate = widget.task.dueDate;
   }
 
@@ -303,12 +301,12 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
       padding: EdgeInsets.only(bottom: bottomInset),
       child: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('Task Details', style: TextStyle(fontSize: 24.0)),
+              const Text('Task Details', style: TextStyle(fontSize: 24.0)),
               TextFormField(
                 controller: _nameController,
                 decoration: InputDecoration(
@@ -330,11 +328,11 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
                 height: 16,
               ),
               TextFormField(
-                initialValue: Degree.toString(),
+                initialValue: degree.toString(),
                 keyboardType: TextInputType.number,
                 onChanged: (value) {
                   setState(() {
-                    Degree = int.tryParse(value) ?? 0;
+                    degree = int.tryParse(value) ?? 0;
                   });
                 },
                 decoration: InputDecoration(
@@ -348,7 +346,7 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
                 children: [
                   ElevatedButton(
                     style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
+                        backgroundColor: WidgetStateProperty.all(
                             const Color.fromARGB(255, 128, 152, 129))),
                     onPressed: () {
                       _selectDate(context);
@@ -367,7 +365,7 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
               const SizedBox(height: 16.0),
               ElevatedButton(
                 style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
+                    backgroundColor: WidgetStateProperty.all(
                         const Color.fromARGB(255, 128, 152, 129))),
                 onPressed: () {
                   _updateTask(context);
@@ -377,13 +375,13 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
                   style: TextStyle(color: Colors.black),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 16,
               ),
               ElevatedButton(
                 style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                        Color.fromARGB(255, 127, 157, 115))),
+                    backgroundColor: WidgetStateProperty.all(
+                        const Color.fromARGB(255, 127, 157, 115))),
                 onPressed: () {
                   _deleteTask(context);
                 },
@@ -440,16 +438,16 @@ class _TaskBottomSheetState extends State<TaskBottomSheet> {
       name: _nameController.text,
       dueDate: _dueDate,
       details: _detailsController.text,
-      Degree: Degree,
+      Degree: degree,
       submissions: widget.task.submissions,
     );
-    Provider.of<ProviderService>(context, listen: false)
+    Provider.of<TaskProvider>(context, listen: false)
         .updateTask(widget.index, updatedTask);
     Navigator.pop(context);
   }
 
   void _deleteTask(BuildContext context) {
-    Provider.of<ProviderService>(context, listen: false).deleteTask(widget.index);
+    Provider.of<TaskProvider>(context, listen: false).deleteTask(widget.index);
     Navigator.of(context).pop();
   }
 }
